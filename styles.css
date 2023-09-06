@@ -124,3 +124,8 @@ border-color: black;
   color: rgba(249, 0, 0, 0.633);
   font-weight: bold;
 }
+
+.palabras{
+  width: 40%;
+  margin: 0 30% 0 30%;
+}
