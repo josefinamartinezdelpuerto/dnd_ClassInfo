@@ -126,6 +126,6 @@ border-color: black;
 }
 
 .palabras{
-  width: 40%;
-  margin: 0 30% 0 30%;
+  width: 50% !important;
+  margin: 0 25% 0 25% !important;
 }
