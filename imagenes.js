@@ -14,7 +14,6 @@ document.addEventListener("DOMContentLoaded", function () {
     warlock: "img/Warlock.png",
     wizard: "img/Wizard.png",
   };
-
   //Funcion que genera los botones de las distintas clases (crea elementos de tipo boton, imagen y un span para en el css trabajarlo mejor)
   function generarBotones(data) {
     const btnDiv = document.getElementById("btnClases");
@@ -22,7 +21,6 @@ document.addEventListener("DOMContentLoaded", function () {
       const classButton = document.createElement("button");
       const buttonImg = document.createElement("img");
       const textElement = document.createElement("span");
-
       // Se hace otra constante que tenga como valor el array de todas las imagenes y busque la clase por el nombre segun la clase del boton
       const imagenUrl = imagenesPorClase[clase.name.toLowerCase()];
       if (imagenUrl) {
@@ -56,8 +54,9 @@ document.addEventListener("DOMContentLoaded", function () {
       });
       btnDiv.appendChild(classButton);
     });
-
     //Se crea un boton para limpiar la pantalla cuando se preciona y tambien se le agrega imagen, boton y span
+    const resultDiv = document.getElementById("result");
+
     const botonBorrar = document.createElement("button");
     const buttonImg = document.createElement("img");
     const textElement = document.createElement("span");
@@ -66,17 +65,18 @@ document.addEventListener("DOMContentLoaded", function () {
     botonBorrar.appendChild(textoBtn);
     botonBorrar.appendChild(textElement);
     botonBorrar.appendChild(buttonImg);
-    btnDiv.appendChild(botonBorrar);
+
+    resultDiv.appendChild(botonBorrar);
 
     botonBorrar.addEventListener("click", function () {
       clearData();
     });
     console.log(data);
   }
-
   //Se crea la funcion para que cuando se haga click en otro boton de otra clase no se acumule la informacion sino que esconda la anterior y abra la nueva
   function clearData() {
     const resultDiv = document.getElementById("result");
+    btnClases.classList.remove("d-none");
     resultDiv.classList.add("hide");
     const nombreClase = document.getElementById("nameClass");
     const vidaClase = document.getElementById("vidaClass");
@@ -89,11 +89,11 @@ document.addEventListener("DOMContentLoaded", function () {
     profiClase.innerHTML = null;
     subClase.innerHTML = null;
   }
-
   //funcion que muestra las clases y todos los objetos que lleva dentro: subclase, vida, choices,nombre)
   function showClass(clase) {
     const resultDiv = document.getElementById("result");
     clearData();
+    btnClases.classList.add("d-none");
     resultDiv.classList.remove("hide");
     const nombreClase = document.getElementById("nameClass");
     const vidaClase = document.getElementById("vidaClass");
@@ -110,7 +110,6 @@ document.addEventListener("DOMContentLoaded", function () {
     nombreClase.appendChild(textoNombreClase);
     vidaClase.appendChild(textoVidaClase);
     choicesClase.appendChild(textoChoicesClase);
-
     // Por cada valor que tenga proficiencies y SubClass va a generar un li para que no quede todo junto sino que cree una columna
     clase.proficiencies.forEach((proficiency) => {
       const itemLista = document.createElement("li");
@@ -126,7 +125,10 @@ document.addEventListener("DOMContentLoaded", function () {
       subClase.appendChild(itemLista);
     });
   }
-
+  //Se hacen const con las url de las api utilizadas
+  const baseURL = "https://www.dnd5eapi.co";
+  const apiUrl = "https://www.dnd5eapi.co/api/classes";
+  fetchData(apiUrl);
   //Se hace la funcion fetchData a la api mediante el url y se genera el catch por si hay algun error
   function fetchData(url) {
     fetch(url)
@@ -137,19 +139,10 @@ document.addEventListener("DOMContentLoaded", function () {
         return response.json();
       })
       .then((data) => {
-        // Handle the fetched data here
         generarBotones(data);
       })
       .catch((error) => {
         console.error("There was a problem with the fetch operation:", error);
       });
   }
-
-  //Se hacen const con las url de las api utilizadas
-  const baseURL = "https://www.dnd5eapi.co";
-
-  const apiUrl = "https://www.dnd5eapi.co/api/classes";
-
-  // Llama la funcion del fetch con la url
-  fetchData(apiUrl);
 });
